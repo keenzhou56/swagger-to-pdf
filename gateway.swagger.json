@@ -1,0 +1,363 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "gateway/gateway.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/user/checkToken": {
+      "post": {
+        "operationId": "UserApiCheckToken",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayCheckTokenResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayCheckTokenRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserApiService"
+        ]
+      }
+    },
+    "/v1/user/getBackPassword": {
+      "post": {
+        "operationId": "UserApiGetBackPassword",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayGetBackPasswordResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayGetBackPasswordRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserApiService"
+        ]
+      }
+    },
+    "/v1/user/login": {
+      "post": {
+        "operationId": "UserApiLogin",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayLoginAndRegisterResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayLoginAndRegisterRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserApiService"
+        ]
+      }
+    },
+    "/v1/user/register": {
+      "post": {
+        "operationId": "UserApiRegister",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayLoginAndRegisterResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayLoginAndRegisterRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserApiService"
+        ]
+      }
+    },
+    "/v1/user/resetPassword": {
+      "post": {
+        "operationId": "UserApiResetPassword",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayResetPasswordResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayResetPasswordRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserApiService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "gatewayGatewayCheckTokenRequest": {
+      "type": "object",
+      "properties": {
+        "cp_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "game_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "user_id": {
+          "type": "string"
+        },
+        "access_token": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sign": {
+          "type": "string"
+        }
+      }
+    },
+    "gatewayGatewayCheckTokenResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/userCheckTokenResponse"
+        }
+      }
+    },
+    "gatewayGatewayGetBackPasswordRequest": {
+      "type": "object",
+      "properties": {
+        "cp_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "game_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "bind_email": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sign": {
+          "type": "string"
+        }
+      }
+    },
+    "gatewayGatewayGetBackPasswordResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "gatewayGatewayLoginAndRegisterRequest": {
+      "type": "object",
+      "properties": {
+        "cp_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "game_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "user_name": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "user_channel_id": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sign": {
+          "type": "string"
+        }
+      }
+    },
+    "gatewayGatewayLoginAndRegisterResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/userLoginAndRegisterResponse"
+        }
+      }
+    },
+    "gatewayGatewayResetPasswordRequest": {
+      "type": "object",
+      "properties": {
+        "cp_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "game_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "security_key": {
+          "type": "string"
+        },
+        "new_password": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sign": {
+          "type": "string"
+        }
+      }
+    },
+    "gatewayGatewayResetPasswordResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "userCheckTokenResponse": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "expire_time": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "userLoginAndRegisterResponse": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "user_name": {
+          "type": "string"
+        },
+        "access_token": {
+          "type": "string"
+        },
+        "expire_time": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "user_channel_id": {
+          "type": "string"
+        },
+        "bind_mail": {
+          "type": "string"
+        },
+        "create_time": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "login_time": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    }
+  }
+}
