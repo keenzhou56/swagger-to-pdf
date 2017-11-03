@@ -325,14 +325,14 @@ function convertToHTML(swaggerJSON){
 
         // verbs for path
         for(var action in swaggerJSON.paths[path]){
-            
+            var path_name =  "path_" + main3Counter +'_' + sub3Counter;
             switch(action)
             {
                 case "get":
-                    html+='<pre class="get"><code class="huge"><span>'+main3Counter +'.' + sub3Counter +' get</span>&nbsp;&nbsp;'+path+'</code></pre>';
+                    html+='<pre class="get"><code class="huge"><span><'+main3Counter +'.' + sub3Counter +' get</span>&nbsp;&nbsp;'+path+'</code></pre>';
                     break; 
                 case "post":
-                    html+='<pre class="post"><code class="huge"><span>'+main3Counter +'.' + sub3Counter +' post</span>&nbsp;&nbsp;'+path+'</code></pre>';
+                    html+='<pre class="post"><code class="huge"><span><a name="'+path_name+'">'+main3Counter +'.' + sub3Counter +' post</a></span>&nbsp;&nbsp;'+path+'</code></pre>';
                     break;
                 case "put":
                     html+='<pre class="put"><code class="huge"><span>'+main3Counter +'.' + sub3Counter +' put</span>&nbsp;&nbsp;'+path+'</code></pre>';
@@ -413,7 +413,7 @@ function convertToHTML(swaggerJSON){
                     var paramDescription = "";
                     if(typeof param.schema !== "undefined" && typeof param.schema["$ref"] !== "undefined"){
                         var dfn = param.schema["$ref"].split('/');
-                        paramDescription += "<br />" + renderDefinition(true, dfn[dfn.length-1] , swaggerJSON.definitions);
+                        paramDescription += "<br />" + renderDefinition(false, dfn[dfn.length-1] , swaggerJSON.definitions);
                     }
                       if  (!paramDescription){
                         paramDescription = "&nbsp;";
@@ -709,14 +709,14 @@ function pathsTableContents(swaggerJSON, mainCounter)
      
      html += '<div class="div-container-margin">';
      for(var action in swaggerJSON.paths[path]){
-            
+            var path_name_table =  "path_" + main3Counter +'_' + sub3Counter;
             switch(action)
             {
                 case "get":
                     html+='<span><b>' +mainCounter +'.' + sub3Counter +'.</b> ' +'get</span>&nbsp;&nbsp;'+path+'';
                     break; 
                 case "post":
-                    html+='<span><b>' +mainCounter +'.' + sub3Counter +'.</b> ' +'post</span>&nbsp;&nbsp;'+path+'';
+                    html+='<a href="#'+path_name_table+'"><span><b>' +mainCounter +'.' + sub3Counter +'.</b> ' +'post</span>&nbsp;&nbsp;'+path+'</a>';
                     break;
                 case "put":
                     html+='<span><b>' +mainCounter +'.' + sub3Counter +'.</b> ' +'put</span>&nbsp;&nbsp;'+path+'';
@@ -771,8 +771,12 @@ function renderDefinition(minimal, dfn, swaggerJSONdefinitions){
 
     html += "   <tbody>";
     var index = 0;
+
+
+
     for(var dfnProps in swaggerJSONdefinitions[dfn].properties){
         // eg: product_id
+
         var rowStyle = "";
         if(index % 2 === 0){
             rowStyle = ALTERNATE_ROW_STYLE;    
@@ -815,10 +819,16 @@ function renderDefinition(minimal, dfn, swaggerJSONdefinitions){
        
 
         var isRequired = false;
-        if(swaggerJSONdefinitions[dfn].required != null){
-            isRequired = swaggerJSONdefinitions[dfn].required.indexOf(dfnProps) !== -1;
+      if(swaggerJSONdefinitions[dfn].properties[dfnProps] != null){
+        if (swaggerJSONdefinitions[dfn].properties[dfnProps].hasOwnProperty("required") && swaggerJSONdefinitions[dfn].properties[dfnProps].required === true){
+          isRequired = true;
         }
-        html += "       <td style='width:30%;'>" + (isRequired==true?"Yes":"Yes") + "</td>";
+      }
+        // if(swaggerJSONdefinitions[dfn].required != null){
+        //
+        //     isRequired = swaggerJSONdefinitions[dfn].required.indexOf(dfnProps) !== -1;
+        // }
+        html += "       <td style='width:30%;'>" + (isRequired==true?"Yes":"no") + "</td>";
         html += "   </tr>";
 
         index ++;

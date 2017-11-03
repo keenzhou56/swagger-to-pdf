@@ -15,6 +15,84 @@
     "application/json"
   ],
   "paths": {
+    "/v1/game/bindAccount": {
+      "post": {
+        "operationId": "GameApiBindAccount",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayGameBindAccountResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayGameBindAccountRequest"
+            }
+          }
+        ],
+        "tags": [
+          "GameApiService"
+        ]
+      }
+    },
+    "/v1/game/login": {
+      "post": {
+        "operationId": "GameApiLogin",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayGameLoginResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayGameLoginRequest"
+            }
+          }
+        ],
+        "tags": [
+          "GameApiService"
+        ]
+      }
+    },
+    "/v1/game/register": {
+      "post": {
+        "operationId": "GameApiRegister",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayGameRegisterResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayGameRegisterRequest"
+            }
+          }
+        ],
+        "tags": [
+          "GameApiService"
+        ]
+      }
+    },
     "/v1/user/checkToken": {
       "post": {
         "operationId": "UserApiCheckToken",
@@ -147,6 +225,63 @@
     }
   },
   "definitions": {
+    "gameGameBindAccountResponse": {
+      "type": "object",
+      "properties": {
+        "guid": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "bind_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gameGameBindData"
+          }
+        }
+      }
+    },
+    "gameGameBindData": {
+      "type": "object",
+      "properties": {
+        "guid": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "game_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "account_type": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "account_id": {
+          "type": "string"
+        },
+        "bind_time": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "gameGameLoginResponse": {
+      "type": "object",
+      "properties": {
+        "guid": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "session_id": {
+          "type": "string"
+        },
+        "bind_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gameGameBindData"
+          }
+        }
+      }
+    },
     "gatewayGatewayCheckTokenRequest": {
       "type": "object",
       "properties": {
@@ -185,6 +320,219 @@
         },
         "data": {
           "$ref": "#/definitions/userCheckTokenResponse"
+        }
+      }
+    },
+    "gatewayGatewayGameBindAccountRequest": {
+      "type": "object",
+      "properties": {
+        "cp_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "",
+          "required": true
+        },
+        "game_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "",
+          "required": true
+        },
+        "guid": {
+          "type": "string",
+          "format": "uint64",
+          "description": "",
+          "required": true
+        },
+        "account_type": {
+          "type": "integer",
+          "format": "int32",
+          "description": "",
+          "required": true
+        },
+        "account_id": {
+          "type": "string",
+          "description": "",
+          "required": true
+        },
+        "access_token": {
+          "type": "string",
+          "description": "",
+          "required": false
+        },
+        "extra": {
+          "type": "string",
+          "description": "",
+          "required": false
+        },
+        "timestamp": {
+          "type": "integer",
+          "format": "int32",
+          "description": "",
+          "required": true
+        },
+        "sign": {
+          "type": "string",
+          "description": "",
+          "required": true
+        }
+      }
+    },
+    "gatewayGatewayGameBindAccountResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/gameGameBindAccountResponse"
+        }
+      }
+    },
+    "gatewayGatewayGameLoginRequest": {
+      "type": "object",
+      "properties": {
+        "cp_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "",
+          "required": true
+        },
+        "game_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "",
+          "required": true
+        },
+        "user_name": {
+          "type": "string",
+          "description": "",
+          "required": false
+        },
+        "password": {
+          "type": "string",
+          "description": "",
+          "required": false
+        },
+        "account_type": {
+          "type": "integer",
+          "format": "int32",
+          "description": "",
+          "required": true
+        },
+        "account_id": {
+          "type": "string",
+          "description": "",
+          "required": false
+        },
+        "access_token": {
+          "type": "string",
+          "description": "",
+          "required": false
+        },
+        "extra": {
+          "type": "string",
+          "description": "",
+          "required": true
+        },
+        "user_channel_id": {
+          "type": "string",
+          "description": "",
+          "required": true
+        },
+        "timestamp": {
+          "type": "integer",
+          "format": "int32",
+          "description": "",
+          "required": true
+        },
+        "sign": {
+          "type": "string",
+          "description": "",
+          "required": true
+        }
+      }
+    },
+    "gatewayGatewayGameLoginResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/gameGameLoginResponse"
+        }
+      }
+    },
+    "gatewayGatewayGameRegisterRequest": {
+      "type": "object",
+      "properties": {
+        "cp_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "cpid",
+          "required": true
+        },
+        "game_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "",
+          "required": true
+        },
+        "user_name": {
+          "type": "string",
+          "description": "",
+          "required": true
+        },
+        "password": {
+          "type": "string",
+          "description": "",
+          "required": true
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "description": "",
+          "required": true
+        },
+        "user_channel_id": {
+          "type": "string",
+          "description": "",
+          "required": true
+        },
+        "timestamp": {
+          "type": "integer",
+          "format": "int32",
+          "description": "",
+          "required": true
+        },
+        "sign": {
+          "type": "string",
+          "description": "",
+          "required": true
+        }
+      }
+    },
+    "gatewayGatewayGameRegisterResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/gameGameLoginResponse"
         }
       }
     },
