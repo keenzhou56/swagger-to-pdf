@@ -1,4 +1,5 @@
 var fs = require('fs'), pdf = require('phantom-html2pdf');
+var desc = require('./param_desc.json');
 // consts
 var FONT_STYLE='font-family: "Helvetica Neue",Trebuchet MS, sans-serif;font-size: 12px;color: #444';
 var ALTERNATE_ROW_STYLE = ";background-color: #EAEAEA";
@@ -7,11 +8,12 @@ var jsonFileListLen;
 var swaggerJSON;
 var html='';
 var jsonFile;
-var fileName = "test.html";
+
+
 var createFileTitlePage=true;
 var swaggerConverter={};
 jsonFileList=process.argv.slice(2);
-
+var fileName = desc.swagger[jsonFileList[0]];
 //面向对象加正则表达方式
 function ccc(field){
   var newArr = [];
@@ -111,7 +113,7 @@ function writeOutFiles(htmlInput,fileName)
 					var tmpPath = result.getTmpPath();
 
 					/* Using the file writer and callback */
-					result.toFile("./output.pdf", function(err) {
+					result.toFile("./"+fileName+".pdf", function(err) {
 						if(err)    
 							console.log("err:" + err);
 						else
@@ -570,6 +572,17 @@ function convertToHTML(swaggerJSON){
     }
 
     html += "</div></div>";
+    html += "<h2>3. code值返回说明:</h2>";
+    html += '<div>'; // path start
+    html += "<table class='table-margin'>";
+    for(var i in desc['code']) {
+      html += "    <tr>";
+      html += "           <td class='td-alignment-small'><b>"+i+":</b></td>";
+      html += "           <td class='td-alignment-std'>" + desc['code'][i] + "</td>";
+      html += "    </tr>";
+    }
+    html += "</table></div>";
+
     html += "</body></html>";
     return html;
 }
@@ -788,8 +801,11 @@ function renderDefinition(minimal, dfn, swaggerJSONdefinitions){
             html += "       <td style='width:10%;'>" + ((typeof swaggerJSONdefinitions[dfn].properties[dfnProps].type !== "undefined") ? swaggerJSONdefinitions[dfn].properties[dfnProps].type : "") + "</td>";
             if(!minimal){
                 html += "       <td style='width:30%;'>";
-                
-                if(typeof swaggerJSONdefinitions[dfn].properties[dfnProps]["$ref"] !== "undefined"){
+
+              html += ((typeof desc['field'][dfnProps] !== "undefined") ? desc['field'][dfnProps]: " ");
+              html += ((typeof swaggerJSONdefinitions[dfn].properties[dfnProps].description !== "undefined") ? " "+swaggerJSONdefinitions[dfn].properties[dfnProps].description : "");
+
+              if(typeof swaggerJSONdefinitions[dfn].properties[dfnProps]["$ref"] !== "undefined"){
                     var items = swaggerJSONdefinitions[dfn].properties[dfnProps]["$ref"].split('/');
                     var subdfn = items[items.length-1];
                     html += "See <a href='#" + subdfn + "'><b>" + subdfn + "</b></a> in the <b>Definitions</b> section.";
@@ -808,9 +824,10 @@ function renderDefinition(minimal, dfn, swaggerJSONdefinitions){
                         }
                     }
                 }
-                else{
-                    html += ((typeof swaggerJSONdefinitions[dfn].properties[dfnProps].description !== "undefined") ? swaggerJSONdefinitions[dfn].properties[dfnProps].description : "");
-                }
+               // else{
+
+
+               // }
                 
 
                 html += "</td>";
@@ -818,17 +835,17 @@ function renderDefinition(minimal, dfn, swaggerJSONdefinitions){
         }
        
 
-        var isRequired = false;
+        var isRequired = true;
       if(swaggerJSONdefinitions[dfn].properties[dfnProps] != null){
-        if (swaggerJSONdefinitions[dfn].properties[dfnProps].hasOwnProperty("required") && swaggerJSONdefinitions[dfn].properties[dfnProps].required === true){
-          isRequired = true;
+        if (swaggerJSONdefinitions[dfn].properties[dfnProps].hasOwnProperty("required") && swaggerJSONdefinitions[dfn].properties[dfnProps].required === false){
+          isRequired = false;
         }
       }
         // if(swaggerJSONdefinitions[dfn].required != null){
         //
         //     isRequired = swaggerJSONdefinitions[dfn].required.indexOf(dfnProps) !== -1;
         // }
-        html += "       <td style='width:30%;'>" + (isRequired==true?"Yes":"no") + "</td>";
+        html += "       <td style='width:30%;'>" + (isRequired===false?"no":"yes") + "</td>";
         html += "   </tr>";
 
         index ++;
@@ -919,6 +936,13 @@ function headerSummary(swaggerJSON){
             html += "<tr><td><span class='small-heading'>Scheme:</span></td><td><span class='subheading-text'>"+swaggerJSON.schemes.join(', ')+"</span></td></tr>";
         }
     }
+
+    if(swaggerJSON.info.update != null){
+      for(var i in swaggerJSON.info.update){
+        html += "<tr><td><span class='small-heading'>Update:</span></td><td><span class='subheading-text'><strong>"+i+"</strong>: </span><span class='subheading-text'>"+swaggerJSON.info.update[i]+"</span></td></tr>";
+      }
+    }
+
     html += "</table>";
 
 

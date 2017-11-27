@@ -2,8 +2,18 @@
   "swagger": "2.0",
   "info": {
     "title": "gateway/gateway.proto",
-    "version": "version not set"
+    "version": "1.0.0",
+    "update":{
+      "2017-11-13":"type参数名 更改成 userType",
+      "2017-11-14.01":"extra参数类型 更改成 object，增加 gatewayExtraType 定义",
+      "2017-11-14.02":"绑定列表增加返回 accountName",
+      "2017-11-17.01":"增加接口返回code值的描述",
+      "2017-11-23.01":"accountId 更改成 thirdPartyId",
+      "2017-11-23.02":"绑定列表返回 accountId accountName 更改成 thirdPartyId thirdPartyNickname",
+      "2017-11-23.03":"user/getBackPassword 接口更改成 /user/forgetPassword"
+    }
   },
+  "host":"gateway.shinezone.com",
   "schemes": [
     "http",
     "https"
@@ -41,6 +51,32 @@
         ]
       }
     },
+    "/v1/game/checkSession": {
+      "post": {
+        "operationId": "GameApiCheckSession",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayGameCheckSessionResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayGameCheckSessionRequest"
+            }
+          }
+        ],
+        "tags": [
+          "GameApiService"
+        ]
+      }
+    },
     "/v1/game/login": {
       "post": {
         "operationId": "GameApiLogin",
@@ -67,14 +103,14 @@
         ]
       }
     },
-    "/v1/game/register": {
+    "/v1/user/forgetPassword": {
       "post": {
-        "operationId": "GameApiRegister",
+        "operationId": "UserApiForgetPassword",
         "responses": {
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/gatewayGatewayGameRegisterResponse"
+              "$ref": "#/definitions/gatewayGatewayForgetPasswordResponse"
             }
           }
         },
@@ -84,59 +120,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/gatewayGatewayGameRegisterRequest"
-            }
-          }
-        ],
-        "tags": [
-          "GameApiService"
-        ]
-      }
-    },
-    "/v1/user/checkToken": {
-      "post": {
-        "operationId": "UserApiCheckToken",
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/gatewayGatewayCheckTokenResponse"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/gatewayGatewayCheckTokenRequest"
-            }
-          }
-        ],
-        "tags": [
-          "UserApiService"
-        ]
-      }
-    },
-    "/v1/user/getBackPassword": {
-      "post": {
-        "operationId": "UserApiGetBackPassword",
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/gatewayGatewayGetBackPasswordResponse"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/gatewayGatewayGetBackPasswordRequest"
+              "$ref": "#/definitions/gatewayGatewayForgetPasswordRequest"
             }
           }
         ],
@@ -152,7 +136,7 @@
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/gatewayGatewayLoginAndRegisterResponse"
+              "$ref": "#/definitions/gatewayGatewayLoginOrRegisterResponse"
             }
           }
         },
@@ -162,7 +146,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/gatewayGatewayLoginAndRegisterRequest"
+              "$ref": "#/definitions/gatewayGatewayLoginOrRegisterRequest"
             }
           }
         ],
@@ -178,7 +162,7 @@
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/gatewayGatewayLoginAndRegisterResponse"
+              "$ref": "#/definitions/gatewayGatewayLoginOrRegisterResponse"
             }
           }
         },
@@ -188,33 +172,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/gatewayGatewayLoginAndRegisterRequest"
-            }
-          }
-        ],
-        "tags": [
-          "UserApiService"
-        ]
-      }
-    },
-    "/v1/user/resetPassword": {
-      "post": {
-        "operationId": "UserApiResetPassword",
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/gatewayGatewayResetPasswordResponse"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/gatewayGatewayResetPasswordRequest"
+              "$ref": "#/definitions/gatewayGatewayLoginOrRegisterRequest"
             }
           }
         ],
@@ -255,12 +213,24 @@
           "type": "integer",
           "format": "int32"
         },
-        "account_id": {
+        "third_party_id": {
+          "type": "string"
+        },
+        "third_party_nickname": {
           "type": "string"
         },
         "bind_time": {
           "type": "integer",
           "format": "int32"
+        }
+      }
+    },
+    "gameGameCheckSessionResponse": {
+      "type": "object",
+      "properties": {
+        "guid": {
+          "type": "string",
+          "format": "uint64"
         }
       }
     },
@@ -282,7 +252,35 @@
         }
       }
     },
-    "gatewayGatewayCheckTokenRequest": {
+    "gatewayExtraType": {
+      "type": "object",
+      "properties": {
+        "guid": {
+          "type": "string",
+          "format": "uint64",
+          "required": false
+        },
+        "game_id": {
+          "type": "integer",
+          "format": "int32",
+          "required": false
+        },
+        "account_type": {
+          "type": "integer",
+          "format": "int32",
+          "required": false
+        },
+        "third_party_id": {
+          "type": "string",
+          "required": false
+        },
+        "access_token": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "gatewayGatewayForgetPasswordRequest": {
       "type": "object",
       "properties": {
         "cp_id": {
@@ -293,10 +291,7 @@
           "type": "integer",
           "format": "int32"
         },
-        "user_id": {
-          "type": "string"
-        },
-        "access_token": {
+        "mail": {
           "type": "string"
         },
         "timestamp": {
@@ -308,7 +303,7 @@
         }
       }
     },
-    "gatewayGatewayCheckTokenResponse": {
+    "gatewayGatewayForgetPasswordResponse": {
       "type": "object",
       "properties": {
         "code": {
@@ -317,9 +312,6 @@
         },
         "message": {
           "type": "string"
-        },
-        "data": {
-          "$ref": "#/definitions/userCheckTokenResponse"
         }
       }
     },
@@ -328,53 +320,38 @@
       "properties": {
         "cp_id": {
           "type": "integer",
-          "format": "int32",
-          "description": "",
-          "required": true
+          "format": "int32"
         },
         "game_id": {
           "type": "integer",
-          "format": "int32",
-          "description": "",
-          "required": true
+          "format": "int32"
         },
         "guid": {
           "type": "string",
-          "format": "uint64",
-          "description": "",
-          "required": true
+          "format": "uint64"
         },
         "account_type": {
           "type": "integer",
-          "format": "int32",
-          "description": "",
-          "required": true
+          "format": "int32"
         },
-        "account_id": {
-          "type": "string",
-          "description": "",
-          "required": true
+        "third_party_id": {
+          "type": "string"
         },
         "access_token": {
-          "type": "string",
-          "description": "",
-          "required": false
+          "type": "string"
         },
         "extra": {
-          "type": "string",
-          "description": "",
-          "required": false
+          "type": "object",
+          "required": false,
+          "description":" （增加：原帐号登入的三方信息）",
+          "$ref": "#/definitions/gatewayExtraType"
         },
         "timestamp": {
           "type": "integer",
-          "format": "int32",
-          "description": "",
-          "required": true
+          "format": "int32"
         },
         "sign": {
-          "type": "string",
-          "description": "",
-          "required": true
+          "type": "string"
         }
       }
     },
@@ -383,7 +360,8 @@
       "properties": {
         "code": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "description":"10051,10054,10055,10056,10057,31003,31005,31006,31008,31009,31010"
         },
         "message": {
           "type": "string"
@@ -393,67 +371,87 @@
         }
       }
     },
+    "gatewayGatewayGameCheckSessionRequest": {
+      "type": "object",
+      "properties": {
+        "cp_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "game_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "guid": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "session_id": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sign": {
+          "type": "string"
+        }
+      }
+    },
+    "gatewayGatewayGameCheckSessionResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "description":"10051,31011"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/gameGameCheckSessionResponse"
+        }
+      }
+    },
     "gatewayGatewayGameLoginRequest": {
       "type": "object",
       "properties": {
         "cp_id": {
           "type": "integer",
-          "format": "int32",
-          "description": "",
-          "required": true
+          "format": "int32"
         },
         "game_id": {
           "type": "integer",
-          "format": "int32",
-          "description": "",
-          "required": true
-        },
-        "user_name": {
-          "type": "string",
-          "description": "",
-          "required": false
-        },
-        "password": {
-          "type": "string",
-          "description": "",
-          "required": false
+          "format": "int32"
         },
         "account_type": {
           "type": "integer",
-          "format": "int32",
-          "description": "",
-          "required": true
+          "format": "int32"
         },
-        "account_id": {
+        "third_party_id": {
           "type": "string",
-          "description": "",
           "required": false
         },
         "access_token": {
           "type": "string",
-          "description": "",
           "required": false
         },
         "extra": {
-          "type": "string",
-          "description": "",
-          "required": true
+          "type": "object",
+          "required": false,
+          "description":" （已登入游客增加:guid）",
+          "$ref": "#/definitions/gatewayExtraType"
         },
         "user_channel_id": {
-          "type": "string",
-          "description": "",
-          "required": true
+          "type": "string"
         },
         "timestamp": {
           "type": "integer",
-          "format": "int32",
-          "description": "",
-          "required": true
+          "format": "int32"
         },
         "sign": {
-          "type": "string",
-          "description": "",
-          "required": true
+          "type": "string"
         }
       }
     },
@@ -462,7 +460,8 @@
       "properties": {
         "code": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "description":"10051,10054,10055,10056,10057,31002,31003,31004,31007"
         },
         "message": {
           "type": "string"
@@ -472,106 +471,7 @@
         }
       }
     },
-    "gatewayGatewayGameRegisterRequest": {
-      "type": "object",
-      "properties": {
-        "cp_id": {
-          "type": "integer",
-          "format": "int32",
-          "description": "cpid",
-          "required": true
-        },
-        "game_id": {
-          "type": "integer",
-          "format": "int32",
-          "description": "",
-          "required": true
-        },
-        "user_name": {
-          "type": "string",
-          "description": "",
-          "required": true
-        },
-        "password": {
-          "type": "string",
-          "description": "",
-          "required": true
-        },
-        "type": {
-          "type": "integer",
-          "format": "int32",
-          "description": "",
-          "required": true
-        },
-        "user_channel_id": {
-          "type": "string",
-          "description": "",
-          "required": true
-        },
-        "timestamp": {
-          "type": "integer",
-          "format": "int32",
-          "description": "",
-          "required": true
-        },
-        "sign": {
-          "type": "string",
-          "description": "",
-          "required": true
-        }
-      }
-    },
-    "gatewayGatewayGameRegisterResponse": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "message": {
-          "type": "string"
-        },
-        "data": {
-          "$ref": "#/definitions/gameGameLoginResponse"
-        }
-      }
-    },
-    "gatewayGatewayGetBackPasswordRequest": {
-      "type": "object",
-      "properties": {
-        "cp_id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "game_id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "bind_email": {
-          "type": "string"
-        },
-        "timestamp": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "sign": {
-          "type": "string"
-        }
-      }
-    },
-    "gatewayGatewayGetBackPasswordResponse": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "message": {
-          "type": "string"
-        }
-      }
-    },
-    "gatewayGatewayLoginAndRegisterRequest": {
+    "gatewayGatewayLoginOrRegisterRequest": {
       "type": "object",
       "properties": {
         "cp_id": {
@@ -588,7 +488,7 @@
         "password": {
           "type": "string"
         },
-        "type": {
+        "user_type": {
           "type": "integer",
           "format": "int32"
         },
@@ -604,73 +504,23 @@
         }
       }
     },
-    "gatewayGatewayLoginAndRegisterResponse": {
+    "gatewayGatewayLoginOrRegisterResponse": {
       "type": "object",
       "properties": {
         "code": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "description":"注册（10051,30051），登入(10051,10052,10053,30052,30053)"
         },
         "message": {
           "type": "string"
         },
         "data": {
-          "$ref": "#/definitions/userLoginAndRegisterResponse"
+          "$ref": "#/definitions/userLoginOrRegisterResponse"
         }
       }
     },
-    "gatewayGatewayResetPasswordRequest": {
-      "type": "object",
-      "properties": {
-        "cp_id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "game_id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "security_key": {
-          "type": "string"
-        },
-        "new_password": {
-          "type": "string"
-        },
-        "timestamp": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "sign": {
-          "type": "string"
-        }
-      }
-    },
-    "gatewayGatewayResetPasswordResponse": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "message": {
-          "type": "string"
-        }
-      }
-    },
-    "userCheckTokenResponse": {
-      "type": "object",
-      "properties": {
-        "user_id": {
-          "type": "string",
-          "format": "uint64"
-        },
-        "expire_time": {
-          "type": "integer",
-          "format": "int32"
-        }
-      }
-    },
-    "userLoginAndRegisterResponse": {
+    "userLoginOrRegisterResponse": {
       "type": "object",
       "properties": {
         "user_id": {
@@ -687,14 +537,15 @@
           "type": "integer",
           "format": "int32"
         },
-        "type": {
+        "user_type": {
           "type": "integer",
           "format": "int32"
         },
-        "user_channel_id": {
-          "type": "string"
+        "bind_mail_status": {
+          "type": "integer",
+          "format": "int32"
         },
-        "bind_mail": {
+        "mail": {
           "type": "string"
         },
         "create_time": {

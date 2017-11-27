@@ -1,0 +1,61 @@
+{
+  "swagger" :{
+    "gateway.swagger.json" :"网关接口设计.html",
+    "game.swagger.json" :"微服务接口设计__游戏用户系统.html",
+    "user.swagger.json" :"微服务接口设计__统一用户系统.html"
+  },
+  "field": {
+    "cp_id": "工作室、合作方唯一标识",
+    "user_id": "用户id",
+    "user_name":"Game4us 用户名",
+    "password":"Game4us 密码",
+    "game_id": "游戏id",
+    "game_bundle_id": "游戏包的标识符",
+    "user_channel_id": "发行渠道",
+    "account_type": "三方帐号类型 enum(Guest = 1, Game4us = 2, Facebook = 3, Google = 4, GameCenter = 5）",
+    "third_party_id": "三方帐号登入后返回的用户标识id",
+    "third_party_nickname":"三方帐号登入后返回的用户昵称",
+    "access_token": "三方登入返回的会话token( 如果是GameCenter登入accessToken为: GameCenter验证参数进行base64_encode(jsonString)后的值 )",
+    "extra": "扩展参数",
+    "guid": "游戏登入后产生的唯一帐号",
+    "session_id": "游戏登入后产生会话id,与guid对应",
+    "user_type": "类型，SZSDK: 1",
+    "timestamp": "当前请求时间，Unix时间戳(秒)",
+    "sign": "网关接口签名参数，规则见：炫踪公共平台技术设计文档5.2",
+    "code": "接口的执行的状态：=0 成功 ",
+    "message": "信息提示,当 code != 0 显示相关信息",
+    "data": "接口的主数据：可以根据实际返回数组或JSON对象",
+    "bind_time": "绑定时间",
+    "bind_mail": "绑定邮件",
+    "security_key": "安全码",
+    "new_password": "新密码",
+    "expire_time":"过期时间",
+    "bind_mail_status":"邮箱绑定状态, 未绑定:1 已绑定:2 已验证:3)",
+    "create_time":"创建时间",
+    "login_time":"上次登入时间"
+  },
+  "code":{
+    "10051": "Api sign err",
+    "10052": "AccessToken expired",
+    "10053": "UserId err",
+    "10054": "AccountType err",
+    "10055": "The third party check token err",
+    "10056": "Not found accountId",
+    "10057": "Can not be guest accountType",
+
+    "30051": "Create user error",
+    "30052": "UserName not exist",
+    "30053": "User password error",
+
+    "31001": "Not found gameId",
+    "31002": "Create guid error",
+    "31003": "Create guid bind error",
+    "31004": "Update session error",
+    "31005": "Guid bound to other account",
+    "31006": "Not found guid",
+    "31007": "Not found guest guid",
+    "31008": "Guid no guest",
+    "31009": "AccountType is guest",
+    "31010": "Old account no bind"
+  }
+}
