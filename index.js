@@ -16,6 +16,9 @@ jsonFileList=process.argv.slice(2);
 var fileName = desc.swagger[jsonFileList[0]];
 //面向对象加正则表达方式
 function ccc(field){
+  if (field === 'bind') {
+    return 'bindList';
+  }
   var newArr = [];
   var arr = field.split("_");
   if (arr.length>0) {
@@ -310,7 +313,7 @@ function convertToHTML(swaggerJSON){
     main3Counter = swaggerContentCheck(swaggerJSON, 'paths');
     sub3Counter=1;
         
-    html += '<h2>'+main3Counter+'. Paths</h2>';
+    html += '<h2>'+main3Counter+'. APIS</h2>';
 
 
     for(var path in swaggerJSON.paths){
@@ -717,7 +720,7 @@ function pathsTableContents(swaggerJSON, mainCounter)
     {
         return html;
     }
-    html += '<h2>' +main3Counter+'. Paths</h2>';
+    html += '<h2>' +main3Counter+'. APIS</h2>';
     for(var path in swaggerJSON.paths){
      
      html += '<div class="div-container-margin">';
@@ -738,7 +741,7 @@ function pathsTableContents(swaggerJSON, mainCounter)
                     html+='<span><b>' +mainCounter +'.' + sub3Counter +'.</b> ' +'delete</span>&nbsp;&nbsp;'+path+'';
                     break;
             }
-            html += "<br><br>";
+            html += "&nbsp;&nbsp;" + desc['api'][path] + "<br><br>";
             sub3Counter++;
         }
          html +="</div>";
@@ -756,7 +759,7 @@ function renderSchemaItems(schemaItems, swaggerDefinitions){
         html += "<br />";
         html += "<br />";
 
-        html += renderDefinition(true, dfn, swaggerDefinitions)
+        html += renderDefinition(false, dfn, swaggerDefinitions)
 
     }
     else{

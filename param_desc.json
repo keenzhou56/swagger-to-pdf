@@ -32,7 +32,20 @@
     "expire_time":"过期时间",
     "bind_mail_status":"邮箱绑定状态, 未绑定:1 已绑定:2 已验证:3)",
     "create_time":"创建时间",
-    "login_time":"上次登入时间"
+    "login_time":"上次登入时间",
+    "app_id": "游戏id或者应用id",
+    "app_st": "应用后端登入校验凭证"
+  },
+  "api" :{
+    "/v1/user/logout" :"统一用户登出",
+    "/v1/user/login" :"统一用户登入",
+    "/v1/user/checkST" :"验证用户APP登入凭证",
+    "/v1/user/register" :"统一用户注册",
+    "/v1/user/checkTGC" :"校验用户是否登入过",
+    "/v1/user/forgetPassword":"忘记密码",
+    "/v1/game/bindAccount":"游戏绑定三方帐号",
+    "/v1/game/checkSession":"游戏后端登入验证",
+    "/v1/game/login":"游戏登入"
   },
   "code":{
     "10051": "Api sign err",

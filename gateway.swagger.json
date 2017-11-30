@@ -2,15 +2,16 @@
   "swagger": "2.0",
   "info": {
     "title": "gateway/gateway.proto",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "update":{
       "2017-11-13":"type参数名 更改成 userType",
       "2017-11-14.01":"extra参数类型 更改成 object，增加 gatewayExtraType 定义",
       "2017-11-14.02":"绑定列表增加返回 accountName",
       "2017-11-17.01":"增加接口返回code值的描述",
-      "2017-11-23.01":"accountId 更改成 thirdPartyId",
-      "2017-11-23.02":"绑定列表返回 accountId accountName 更改成 thirdPartyId thirdPartyNickname",
-      "2017-11-23.03":"user/getBackPassword 接口更改成 /user/forgetPassword"
+      "2017-11-30.01":"accountId 更改成 thirdPartyId",
+      "2017-11-30.02":"绑定列表返回 accountId accountName 更改成 thirdPartyId thirdPartyNickname",
+      "2017-11-30.03":"user/getBackPassword 接口更改成 /user/forgetPassword",
+      "2017-11-30.04":"API: 2.7 2.9 接口参数更改"
     }
   },
   "host":"gateway.shinezone.com",
@@ -103,6 +104,58 @@
         ]
       }
     },
+    "/v1/user/checkST": {
+      "post": {
+        "operationId": "UserApiCheckST",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayCheckSTResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayCheckSTRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserApiService"
+        ]
+      }
+    },
+    "/v1/user/checkTGC": {
+      "post": {
+        "operationId": "UserApiCheckTGC",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayCheckTGCResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayCheckTGCRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserApiService"
+        ]
+      }
+    },
     "/v1/user/forgetPassword": {
       "post": {
         "operationId": "UserApiForgetPassword",
@@ -147,6 +200,32 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/gatewayGatewayLoginOrRegisterRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserApiService"
+        ]
+      }
+    },
+    "/v1/user/logout": {
+      "post": {
+        "operationId": "UserApiLogout",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayUserLogoutResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayUserLogoutRequest"
             }
           }
         ],
@@ -257,37 +336,108 @@
       "properties": {
         "guid": {
           "type": "string",
-          "format": "uint64",
-          "required": false
+          "format": "uint64"
         },
         "game_id": {
           "type": "integer",
-          "format": "int32",
-          "required": false
+          "format": "int32"
         },
         "account_type": {
           "type": "integer",
-          "format": "int32",
-          "required": false
+          "format": "int32"
         },
         "third_party_id": {
-          "type": "string",
-          "required": false
+          "type": "string"
         },
         "access_token": {
+          "type": "string"
+        }
+      }
+    },
+    "gatewayGatewayCheckSTData": {
+      "type": "object",
+      "properties": {
+        "user_id": {
           "type": "string",
-          "required": false
+          "format": "uint64"
+        },
+        "user_name": {
+          "type": "string"
+        },
+        "app_permission": {
+          "type": "string"
+        }
+      }
+    },
+    "gatewayGatewayCheckSTRequest": {
+      "type": "object",
+      "properties": {
+        "app_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "app_st": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sign": {
+          "type": "string"
+        }
+      }
+    },
+    "gatewayGatewayCheckSTResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/gatewayGatewayCheckSTData"
+        }
+      }
+    },
+    "gatewayGatewayCheckTGCRequest": {
+      "type": "object",
+      "properties": {
+        "app_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "timestamp": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sign": {
+          "type": "string"
+        }
+      }
+    },
+    "gatewayGatewayCheckTGCResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/gatewayGatewayLoginOrRegisterData"
         }
       }
     },
     "gatewayGatewayForgetPasswordRequest": {
       "type": "object",
       "properties": {
-        "cp_id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "game_id": {
+        "app_id": {
           "type": "integer",
           "format": "int32"
         },
@@ -471,29 +621,40 @@
         }
       }
     },
-    "gatewayGatewayLoginOrRegisterRequest": {
+    "gatewayGatewayLoginOrRegisterData": {
       "type": "object",
       "properties": {
-        "cp_id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "game_id": {
-          "type": "integer",
-          "format": "int32"
+        "user_id": {
+          "type": "string",
+          "format": "uint64"
         },
         "user_name": {
-          "type": "string"
-        },
-        "password": {
           "type": "string"
         },
         "user_type": {
           "type": "integer",
           "format": "int32"
         },
-        "user_channel_id": {
+        "app_st": {
           "type": "string"
+        },
+        "access_token": {
+          "type": "string"
+        }
+      }
+    },
+    "gatewayGatewayLoginOrRegisterRequest": {
+      "type": "object",
+      "properties": {
+        "user_name": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "app_id": {
+          "type": "integer",
+          "format": "int32"
         },
         "timestamp": {
           "type": "integer",
@@ -516,45 +677,35 @@
           "type": "string"
         },
         "data": {
-          "$ref": "#/definitions/userLoginOrRegisterResponse"
+          "$ref": "#/definitions/gatewayGatewayLoginOrRegisterData"
         }
       }
     },
-    "userLoginOrRegisterResponse": {
+    "gatewayGatewayUserLogoutRequest": {
       "type": "object",
       "properties": {
-        "user_id": {
-          "type": "string",
-          "format": "uint64"
+        "app_id": {
+          "type": "integer",
+          "format": "int32"
         },
-        "user_name": {
+        "timestamp": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sign": {
           "type": "string"
+        }
+      }
+    },
+    "gatewayGatewayUserLogoutResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
         },
-        "access_token": {
+        "message": {
           "type": "string"
-        },
-        "expire_time": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "user_type": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "bind_mail_status": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "mail": {
-          "type": "string"
-        },
-        "create_time": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "login_time": {
-          "type": "integer",
-          "format": "int32"
         }
       }
     }
