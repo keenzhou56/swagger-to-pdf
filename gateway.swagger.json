@@ -4,14 +4,20 @@
     "title": "gateway/gateway.proto",
     "version": "1.1.0",
     "update":{
-      "2017-11-13":"type参数名 更改成 userType",
-      "2017-11-14.01":"extra参数类型 更改成 object，增加 gatewayExtraType 定义",
-      "2017-11-14.02":"绑定列表增加返回 accountName",
-      "2017-11-17.01":"增加接口返回code值的描述",
-      "2017-11-30.01":"accountId 更改成 thirdPartyId",
-      "2017-11-30.02":"绑定列表返回 accountId accountName 更改成 thirdPartyId thirdPartyNickname",
-      "2017-11-30.03":"user/getBackPassword 接口更改成 /user/forgetPassword",
-      "2017-11-30.04":"API: 2.7 2.9 接口参数更改"
+      "1.0.0": {
+        "2017-11-13":"type参数名 更改成 userType",
+        "2017-11-14.01":"extra参数类型 更改成 object，增加 gatewayExtraType 定义",
+        "2017-11-14.02":"绑定列表增加返回 accountName",
+        "2017-11-17.01":"增加接口返回code值的描述"
+      },
+      "1.1.0": {
+        "2017-11-30.01":"accountId 更改成 thirdPartyId",
+        "2017-11-30.02":"绑定列表返回 accountId accountName 更改成 thirdPartyId thirdPartyNickname",
+        "2017-11-30.03":"v1/user/getBackPassword 接口更改成 v1/user/forgetPassword",
+        "2017-11-30.04":"API: v1/user/login v1/user/register 接口参数更改",
+        "2017-12-04.01":"API: 增加支付及采集接口的Mock接口",
+        "2017-12-05.01":"gameId 更改成 appId, gameSecret 更改成 appSecret"
+      }
     }
   },
   "host":"gateway.shinezone.com",
@@ -26,6 +32,32 @@
     "application/json"
   ],
   "paths": {
+    "/v1/data/collection": {
+      "post": {
+        "operationId": "DataApiCollection",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayDataCollectionResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayDataCollectionRequest"
+            }
+          }
+        ],
+        "tags": [
+          "DataApiService"
+        ]
+      }
+    },
     "/v1/game/bindAccount": {
       "post": {
         "operationId": "GameApiBindAccount",
@@ -101,6 +133,136 @@
         ],
         "tags": [
           "GameApiService"
+        ]
+      }
+    },
+    "/v1/payment/callback": {
+      "post": {
+        "operationId": "PaymentApiCallback",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayPaymentCallbackResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayPaymentCallbackRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PaymentApiService"
+        ]
+      }
+    },
+    "/v1/payment/cancelOrder": {
+      "post": {
+        "operationId": "PaymentApiCancelOrder",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayPaymentCancelOrderResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayPaymentCancelOrderRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PaymentApiService"
+        ]
+      }
+    },
+    "/v1/payment/createOrder": {
+      "post": {
+        "operationId": "PaymentApiCreateOrder",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayPaymentCreateOrderResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayPaymentCreateOrderRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PaymentApiService"
+        ]
+      }
+    },
+    "/v1/payment/queryOrderDetail": {
+      "post": {
+        "operationId": "PaymentApiQueryOrderDetail",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayPaymentQueryOrderDetailResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayPaymentQueryOrderDetailRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PaymentApiService"
+        ]
+      }
+    },
+    "/v1/payment/queryOrderList": {
+      "post": {
+        "operationId": "PaymentApiQueryOrderList",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayPaymentQueryOrderListResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayPaymentQueryOrderListRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PaymentApiService"
         ]
       }
     },
@@ -269,7 +431,7 @@
           "type": "string",
           "format": "uint64"
         },
-        "bind_list": {
+        "bind": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/gameGameBindData"
@@ -284,7 +446,7 @@
           "type": "string",
           "format": "uint64"
         },
-        "game_id": {
+        "app_id": {
           "type": "integer",
           "format": "int32"
         },
@@ -304,15 +466,6 @@
         }
       }
     },
-    "gameGameCheckSessionResponse": {
-      "type": "object",
-      "properties": {
-        "guid": {
-          "type": "string",
-          "format": "uint64"
-        }
-      }
-    },
     "gameGameLoginResponse": {
       "type": "object",
       "properties": {
@@ -323,7 +476,7 @@
         "session_id": {
           "type": "string"
         },
-        "bind_list": {
+        "bind": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/gameGameBindData"
@@ -338,7 +491,7 @@
           "type": "string",
           "format": "uint64"
         },
-        "game_id": {
+        "app_id": {
           "type": "integer",
           "format": "int32"
         },
@@ -351,6 +504,15 @@
         },
         "access_token": {
           "type": "string"
+        }
+      }
+    },
+    "gatewayGameCheckSessionData": {
+      "type": "object",
+      "properties": {
+        "guid": {
+          "type": "string",
+          "format": "uint64"
         }
       }
     },
@@ -434,6 +596,40 @@
         }
       }
     },
+    "gatewayGatewayDataCollectionRequest": {
+      "type": "object",
+      "properties": {
+        "app_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "log_message": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gatewayLogMessageData"
+          }
+        },
+        "timestamp": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sign": {
+          "type": "string"
+        }
+      }
+    },
+    "gatewayGatewayDataCollectionResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
     "gatewayGatewayForgetPasswordRequest": {
       "type": "object",
       "properties": {
@@ -472,7 +668,7 @@
           "type": "integer",
           "format": "int32"
         },
-        "game_id": {
+        "app_id": {
           "type": "integer",
           "format": "int32"
         },
@@ -528,7 +724,7 @@
           "type": "integer",
           "format": "int32"
         },
-        "game_id": {
+        "app_id": {
           "type": "integer",
           "format": "int32"
         },
@@ -560,7 +756,7 @@
           "type": "string"
         },
         "data": {
-          "$ref": "#/definitions/gameGameCheckSessionResponse"
+          "$ref": "#/definitions/gatewayGameCheckSessionData"
         }
       }
     },
@@ -571,7 +767,7 @@
           "type": "integer",
           "format": "int32"
         },
-        "game_id": {
+        "app_id": {
           "type": "integer",
           "format": "int32"
         },
@@ -681,6 +877,262 @@
         }
       }
     },
+    "gatewayGatewayPaymentCallbackExtra": {
+      "type": "object",
+      "properties": {
+        "outer_order_id": {
+          "type": "string",
+          "required": false
+        },
+        "purchase_token": {
+          "type": "string"
+        },
+        "product_id": {
+          "type": "string"
+        },
+        "package_name": {
+          "type": "string",
+          "required": false
+        },
+        "real_currency": {
+          "type": "string",
+          "required": false
+        },
+        "real_amount": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "gatewayGatewayPaymentCallbackRequest": {
+      "type": "object",
+      "properties": {
+        "app_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "order_id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "payment_method": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "extra": {
+          "$ref": "#/definitions/gatewayGatewayPaymentCallbackExtra"
+        },
+        "timestamp": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sign": {
+          "type": "string"
+        }
+      }
+    },
+    "gatewayGatewayPaymentCallbackResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/gatewayPaymentOrderData"
+        }
+      }
+    },
+    "gatewayGatewayPaymentCancelOrderRequest": {
+      "type": "object",
+      "properties": {
+        "app_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "order_id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "timestamp": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sign": {
+          "type": "string"
+        }
+      }
+    },
+    "gatewayGatewayPaymentCancelOrderResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "gatewayGatewayPaymentCreateOrderExtra": {
+      "type": "object",
+      "properties": {
+        "area_id": {
+          "type": "integer",
+          "format": "int32",
+          "required": false
+        }
+      }
+    },
+    "gatewayGatewayPaymentCreateOrderRequest": {
+      "type": "object",
+      "properties": {
+        "app_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "guid": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "game_role_id": {
+          "type": "string"
+        },
+        "product_id": {
+          "type": "string"
+        },
+        "product_num": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "product_price": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "payment_method": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "payment_currency": {
+          "type": "string"
+        },
+        "payment_amount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "order_source": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "extra": {
+          "$ref": "#/definitions/gatewayGatewayPaymentCreateOrderExtra",
+          "required" : false
+        },
+        "timestamp": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sign": {
+          "type": "string"
+        }
+      }
+    },
+    "gatewayGatewayPaymentCreateOrderResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/gatewayPaymentOrderData"
+        }
+      }
+    },
+    "gatewayGatewayPaymentQueryOrderDetailRequest": {
+      "type": "object",
+      "properties": {
+        "app_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "guid": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "order_id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "timestamp": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sign": {
+          "type": "string"
+        }
+      }
+    },
+    "gatewayGatewayPaymentQueryOrderDetailResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/gatewayPaymentOrderData"
+        }
+      }
+    },
+    "gatewayGatewayPaymentQueryOrderListRequest": {
+      "type": "object",
+      "properties": {
+        "app_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "guid": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "timestamp": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sign": {
+          "type": "string"
+        }
+      }
+    },
+    "gatewayGatewayPaymentQueryOrderListResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gatewayPaymentOrderData"
+          }
+        }
+      }
+    },
     "gatewayGatewayUserLogoutRequest": {
       "type": "object",
       "properties": {
@@ -706,6 +1158,71 @@
         },
         "message": {
           "type": "string"
+        }
+      }
+    },
+    "gatewayLogMessageData": {
+      "type": "object",
+      "properties": {
+        "dc_game_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "dc_area_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "dc_user_id": {
+          "type": "string"
+        },
+        "dc_time": {
+          "type": "string"
+        },
+        "dc_cash": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "dc_coin": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "dc_level": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "dc_rtime": {
+          "type": "string"
+        },
+        "dc_session": {
+          "type": "string"
+        },
+        "dc_ip": {
+          "type": "string"
+        },
+        "dc_act": {
+          "type": "string"
+        },
+        "dc_act_extra": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "gatewayPaymentOrderData": {
+      "type": "object",
+      "properties": {
+        "order_id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "outer_order_id": {
+          "type": "string"
+        },
+        "order_status": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     }

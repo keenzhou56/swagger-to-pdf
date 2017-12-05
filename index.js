@@ -18,6 +18,10 @@ var fileName = desc.swagger[jsonFileList[0]];
 function ccc(field){
   if (field === 'bind') {
     return 'bindList';
+  } else if (field === 'log_message') {
+    return 'logMessageList';
+  } else if (field === 'act_extra') {
+    return 'actExtraMap';
   }
   var newArr = [];
   var arr = field.split("_");
@@ -316,7 +320,11 @@ function convertToHTML(swaggerJSON){
     html += '<h2>'+main3Counter+'. APIS</h2>';
 
 
-    for(var path in swaggerJSON.paths){
+  var apiList = desc['api'];
+
+  for(var path in apiList){
+
+    if (!swaggerJSON.paths[path]) continue;
         
        // if(loopBreaker===2){break;};
        if(pathCounter===0)
@@ -721,8 +729,12 @@ function pathsTableContents(swaggerJSON, mainCounter)
         return html;
     }
     html += '<h2>' +main3Counter+'. APIS</h2>';
-    for(var path in swaggerJSON.paths){
-     
+    var apiList = desc['api'];
+
+    for(var path in apiList){
+
+      if (!swaggerJSON.paths[path]) continue;
+
      html += '<div class="div-container-margin">';
      for(var action in swaggerJSON.paths[path]){
             var path_name_table =  "path_" + main3Counter +'_' + sub3Counter;
@@ -942,8 +954,10 @@ function headerSummary(swaggerJSON){
 
     if(swaggerJSON.info.update != null){
       for(var i in swaggerJSON.info.update){
-        html += "<tr><td><span class='small-heading'>Update:</span></td><td><span class='subheading-text'><strong>"+i+"</strong>: </span><span class='subheading-text'>"+swaggerJSON.info.update[i]+"</span></td></tr>";
-      }
+          for(var i2 in swaggerJSON.info.update[i]){
+            html += "<tr><td><span class='small-heading'>Update:</span><span class='subheading-text'><strong>"+i+"</strong></span></td><td><span class='subheading-text'><strong>"+i2+"</strong>: </span><span class='subheading-text'>"+swaggerJSON.info.update[i][i2]+"</span></td></tr>";
+          }
+        }
     }
 
     html += "</table>";

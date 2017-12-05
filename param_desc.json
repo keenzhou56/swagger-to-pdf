@@ -10,7 +10,7 @@
     "user_name":"Game4us 用户名",
     "password":"Game4us 密码",
     "game_id": "游戏id",
-    "game_bundle_id": "游戏包的标识符",
+
     "user_channel_id": "发行渠道",
     "account_type": "三方帐号类型 enum(Guest = 1, Game4us = 2, Facebook = 3, Google = 4, GameCenter = 5）",
     "third_party_id": "三方帐号登入后返回的用户标识id",
@@ -33,19 +33,65 @@
     "bind_mail_status":"邮箱绑定状态, 未绑定:1 已绑定:2 已验证:3)",
     "create_time":"创建时间",
     "login_time":"上次登入时间",
-    "app_id": "游戏id或者应用id",
-    "app_st": "应用后端登入校验凭证"
+    "app_id": "应用id",
+    "app_st": "应用后端登入校验凭证",
+    "app_bundle_id": "应用包的标识符",
+
+    "order_id": "SZ订单id",
+    "outer_order_id":"外部订单id",
+    "order_source": "订单来源",
+    "order_status": "订单状态",
+    "game_role_id":"游戏内角色id,如果不存在角色id,请填写guid",
+    "product_id": "商品编号",
+    "product_num": "商品数量",
+    "product_price": "商品单价",
+    "payment_method":"支付方式",
+    "payment_currency": "支付货币",
+    "payment_amount":"支付金额 (分)",
+    "payment_time":"收到第三方支付系统成功支付的回调的时间",
+    "purchase_token":"支付凭证或token",
+    "package_name": "应用包的标识符",
+    "real_currency":"真实支付的货币",
+    "real_amount":"真实支付的金额",
+
+    "dc_game_id": "对应 数据采集标准化.xlsx game_id",
+    "dc_area_id":"对应 数据采集标准化.xlsx area_id",
+    "dc_user_id":"对应 数据采集标准化.xlsx user_id",
+    "dc_time": "对应 数据采集标准化.xlsx time",
+    "dc_cash": "对应 数据采集标准化.xlsx cash",
+    "dc_coin": "对应 数据采集标准化.xlsx coin",
+    "dc_level":"对应 数据采集标准化.xlsx level",
+    "dc_rtime": "对应 数据采集标准化.xlsx rtime",
+    "dc_session":"对应 数据采集标准化.xlsx session",
+    "dc_ip":"对应 数据采集标准化.xlsx ip",
+    "dc_act":"对应 数据采集标准化.xlsx act",
+    "dc_act_extra": "对应 数据采集标准化.xlsx act扩展出来的参数列表"
+
+
+
+
   },
   "api" :{
-    "/v1/user/logout" :"统一用户登出",
-    "/v1/user/login" :"统一用户登入",
-    "/v1/user/checkST" :"验证用户APP登入凭证",
+
     "/v1/user/register" :"统一用户注册",
+    "/v1/user/login" :"统一用户登入",
+    "/v1/user/logout" :"统一用户登出",
+    "/v1/user/checkST" :"验证用户APP登入凭证",
     "/v1/user/checkTGC" :"校验用户是否登入过",
     "/v1/user/forgetPassword":"忘记密码",
+
+    "/v1/game/login":"游戏登入",
     "/v1/game/bindAccount":"游戏绑定三方帐号",
     "/v1/game/checkSession":"游戏后端登入验证",
-    "/v1/game/login":"游戏登入"
+
+    "/v1/payment/createOrder" :"创建订单",
+    "/v1/payment/cancelOrder" :"取消订单",
+    "/v1/payment/callback" :"SZSDK客户端回调",
+    "/v1/payment/queryOrderDetail" :"查询订单详情",
+    "/v1/payment/queryOrderList" :"查询订单列表",
+
+    "/v1/data/collection" :"数据采集"
+
   },
   "code":{
     "10051": "Api sign err",
@@ -55,12 +101,15 @@
     "10055": "The third party check token err",
     "10056": "Not found accountId",
     "10057": "Can not be guest accountType",
+    "10058": "ST expired!",
+    "10059": "TGT expired, please login!",
+    "10060": "memSet false!",
 
     "30051": "Create user error",
     "30052": "UserName not exist",
     "30053": "User password error",
 
-    "31001": "Not found gameId",
+    "31001": "Not found appId",
     "31002": "Create guid error",
     "31003": "Create guid bind error",
     "31004": "Update session error",
