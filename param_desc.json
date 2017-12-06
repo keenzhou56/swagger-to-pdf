@@ -38,14 +38,14 @@
     "app_bundle_id": "应用包的标识符",
 
     "order_id": "SZ订单id",
-    "outer_order_id":"外部订单id",
+    "outer_order_id":"外部订单id(或第三方订单id)",
     "order_source": "订单来源",
     "order_status": "订单状态",
     "game_role_id":"游戏内角色id,如果不存在角色id,请填写guid",
     "product_id": "商品编号",
     "product_num": "商品数量",
     "product_price": "商品单价",
-    "payment_method":"支付方式",
+    "payment_method":"支付方式 enum(APPLE = 1, GOOGLE = 2）",
     "payment_currency": "支付货币",
     "payment_amount":"支付金额 (分)",
     "payment_time":"收到第三方支付系统成功支付的回调的时间",
@@ -86,7 +86,7 @@
 
     "/v1/payment/createOrder" :"创建订单",
     "/v1/payment/cancelOrder" :"取消订单",
-    "/v1/payment/callback" :"SZSDK客户端回调",
+    "/v1/payment/checkOrder" :"校验订单并发货",
     "/v1/payment/queryOrderDetail" :"查询订单详情",
     "/v1/payment/queryOrderList" :"查询订单列表",
 

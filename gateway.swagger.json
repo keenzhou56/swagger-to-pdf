@@ -136,32 +136,6 @@
         ]
       }
     },
-    "/v1/payment/callback": {
-      "post": {
-        "operationId": "PaymentApiCallback",
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/gatewayGatewayPaymentCallbackResponse"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/gatewayGatewayPaymentCallbackRequest"
-            }
-          }
-        ],
-        "tags": [
-          "PaymentApiService"
-        ]
-      }
-    },
     "/v1/payment/cancelOrder": {
       "post": {
         "operationId": "PaymentApiCancelOrder",
@@ -180,6 +154,32 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/gatewayGatewayPaymentCancelOrderRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PaymentApiService"
+        ]
+      }
+    },
+    "/v1/payment/checkOrder": {
+      "post": {
+        "operationId": "PaymentApiCheckOrder",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayPaymentCheckOrderResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/gatewayGatewayPaymentCheckOrderRequest"
             }
           }
         ],
@@ -877,75 +877,6 @@
         }
       }
     },
-    "gatewayGatewayPaymentCallbackExtra": {
-      "type": "object",
-      "properties": {
-        "outer_order_id": {
-          "type": "string",
-          "required": false
-        },
-        "purchase_token": {
-          "type": "string"
-        },
-        "product_id": {
-          "type": "string"
-        },
-        "package_name": {
-          "type": "string",
-          "required": false
-        },
-        "real_currency": {
-          "type": "string",
-          "required": false
-        },
-        "real_amount": {
-          "type": "string",
-          "required": false
-        }
-      }
-    },
-    "gatewayGatewayPaymentCallbackRequest": {
-      "type": "object",
-      "properties": {
-        "app_id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "order_id": {
-          "type": "string",
-          "format": "uint64"
-        },
-        "payment_method": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "extra": {
-          "$ref": "#/definitions/gatewayGatewayPaymentCallbackExtra"
-        },
-        "timestamp": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "sign": {
-          "type": "string"
-        }
-      }
-    },
-    "gatewayGatewayPaymentCallbackResponse": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "message": {
-          "type": "string"
-        },
-        "data": {
-          "$ref": "#/definitions/gatewayPaymentOrderData"
-        }
-      }
-    },
     "gatewayGatewayPaymentCancelOrderRequest": {
       "type": "object",
       "properties": {
@@ -975,6 +906,75 @@
         },
         "message": {
           "type": "string"
+        }
+      }
+    },
+    "gatewayGatewayPaymentCheckOrderExtra": {
+      "type": "object",
+      "properties": {
+        "outer_order_id": {
+          "type": "string",
+          "required": false
+        },
+        "purchase_token": {
+          "type": "string"
+        },
+        "product_id": {
+          "type": "string"
+        },
+        "package_name": {
+          "type": "string",
+          "required": false
+        },
+        "real_currency": {
+          "type": "string",
+          "required": false
+        },
+        "real_amount": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "gatewayGatewayPaymentCheckOrderRequest": {
+      "type": "object",
+      "properties": {
+        "app_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "order_id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "payment_method": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "extra": {
+          "$ref": "#/definitions/gatewayGatewayPaymentCheckOrderExtra"
+        },
+        "timestamp": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sign": {
+          "type": "string"
+        }
+      }
+    },
+    "gatewayGatewayPaymentCheckOrderResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/gatewayPaymentOrderData"
         }
       }
     },
@@ -1106,6 +1106,10 @@
           "type": "string",
           "format": "uint64"
         },
+        "payment_method": {
+          "type": "integer",
+          "format": "int32"
+        },
         "timestamp": {
           "type": "integer",
           "format": "int32"
@@ -1223,6 +1227,13 @@
         "order_status": {
           "type": "integer",
           "format": "int32"
+        },
+        "payment_method": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "extra": {
+          "$ref": "#/definitions/gatewayGatewayPaymentCheckOrderExtra"
         }
       }
     }
